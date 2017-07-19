@@ -1,11 +1,11 @@
 ---
-openshift::firewall::ignore_dynamic_rules: true
-openshift::master::config_file: /etc/origin/master/master-config.yaml
-openshift::master::manage_kube_config: false
-openshift::master::manage_origin_rpm: false
-openshift::master::manage_service: false
-openshift::master::manage_utilities_pkg: true
-openshift::master::service_name: origin-master
-openshift::node::manage_kube_config: false
-openshift::node::service_name: origin-node
+openshift::firewall_ignore_dynamic_rules: true
+openshift::master_config_file: /etc/origin/master/master-config.yaml
+openshift::master_manage_kube_config: false
+openshift::master_manage_origin_rpm: false
+openshift::master_manage_service: false
+openshift::master_manage_utilities_pkg: true
+openshift::master_service_name: origin-master
+openshift::node_manage_kube_config: false
+openshift::node_service_name: origin-node
 openshift::release: 3.5
