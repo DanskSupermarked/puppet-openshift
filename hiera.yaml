@@ -1,0 +1,12 @@
+---
+version: 5
+defaults:
+  datadir: data
+  data_hash: yaml_data
+hierarchy:
+  - name: "OS family maj release"
+    path: "%{facts.os.family}_%{facts.os.release.major}.yaml"
+  - name: "OS family"
+    path: "%{facts.os.family}.yaml"
+  - name: "Common"
+    path: "common.yaml"
