@@ -49,14 +49,14 @@ openshift::node_eviction_type: hard
 openshift::node_manage_kube_config: false
 openshift::node_manage_service: false
 openshift::node_name: '%{::fqdn}'
-openshift::node_pod_max: '%{::processorcount}'
+openshift::node_pod_max: %{::processorcount}
 openshift::node_service_name: origin-node
 openshift::portal_net: '172.30.0.0/16'
 openshift::preserve_resolv_conf: present
 openshift::release: 3.5
 openshift::reserved_system_cpu: 500m
 openshift::reserved_system_mem: 1Gi
-openshift::resolv_search_domains: 'local'
+openshift::resolv_search_domains: 'local %{::domain}'
 openshift::sdn_plugin: redhat/openshift-ovs-subnet
 openshift::unschedulable_master: true
 openshift::version: '1.5.1'
