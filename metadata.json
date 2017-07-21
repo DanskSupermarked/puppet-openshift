@@ -1,0 +1,39 @@
+{
+  "name": "puppet-openshift",
+  "version": "0.2.0",
+  "source": "https://github.com/DanskSupermarked/puppet-openshift",
+  "author": "Benjamin Merot",
+  "license": "GPL 3.0",
+  "project_page": "https://github.com/DanskSupermarked/puppet-openshift",
+  "summary": "Manage OpenShift 3 infrastructure",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.9.0 <5.0.0"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 3.0.0"
+    },
+    {
+      "name": "reidmv/yamlfile",
+      "version_requirement": ">= 0.2.0"
+    }
+  ]
+}

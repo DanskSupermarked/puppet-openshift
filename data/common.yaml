@@ -1,11 +1,62 @@
 ---
+openshift::build_defaults:
+openshift::build_overrides:
+openshift::ca_certfile:
+openshift::ca_keyfile:
+openshift::children:
+  - etcd
+  - lb
+  - masters
+  - nodes
+openshift::cluster_id: default
+openshift::cluster_network: '10.128.0.0/14'
+openshift::dead_container_max: 20
+openshift::debug_level: 2
+openshift::default_subdomain: 'app.%{::domain}'
+openshift::dns_ip: '172.30.0.1'
+openshift::docker_options: '--log-driver=journald'
+openshift::docker_upgrade: false
+openshift::docker_version: '1.12.1'
+openshift::dnsmasq_conf_file: '/etc/dnsmasq.d/openshift-dns.conf'
+openshift::dnsmasq_servers:
+  - '8.8.8.8'
+openshift::enable_cockpit: false
+openshift::etcd_port: 2379
 openshift::firewall_ignore_dynamic_rules: true
+openshift::firewall_input_chain_ignore: false
+openshift::ingress_ip_network: '172.46.0.0/16'
+openshift::install_examples: true
+openshift::iptables_sync_period: 5s
+openshift::labels:
+openshift::lb_domain:
+openshift::logout_url: 'https://console.%{::domain}'
+openshift::manage_firewall: false
+openshift::manage_kube_config: false
+openshift::manage_origin_rpm: false
+openshift::manage_repo: false
+openshift::master_api_port: 8443
 openshift::master_config_file: /etc/origin/master/master-config.yaml
+openshift::master_console_port: 443
+openshift::master_enable_api_auditing: false
+openshift::master_default_node_selector:
 openshift::master_manage_kube_config: false
 openshift::master_manage_origin_rpm: false
 openshift::master_manage_service: false
 openshift::master_manage_utilities_pkg: true
 openshift::master_service_name: origin-master
+openshift::node_config_file: /etc/origin/node/node-config.yaml
+openshift::node_eviction_type: hard
 openshift::node_manage_kube_config: false
+openshift::node_manage_service: false
+openshift::node_name: '%{::fqdn}'
+openshift::node_pod_max: '%{::processorcount}'
 openshift::node_service_name: origin-node
+openshift::portal_net: '172.30.0.0/16'
+openshift::preserve_resolv_conf: present
 openshift::release: 3.5
+openshift::reserved_system_cpu: 500m
+openshift::reserved_system_mem: 1Gi
+openshift::resolv_search_domains: 'local'
+openshift::sdn_plugin: redhat/openshift-ovs-subnet
+openshift::unschedulable_master: true
+openshift::version: '1.5.1'

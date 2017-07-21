@@ -1,17 +1,6 @@
 # Class: openshift
 # ===========================
 #
-# Parameters
-# ----------
-#
-#
-# Variables
-# ----------
-#
-#
-# Examples
-# --------
-#
 # Authors
 # -------
 #
@@ -22,55 +11,68 @@
 #
 # Copyright 2017 Dansk Supermarked.
 #
-# Base class
 class openshift(
-  $build_defaults       = {},
-  $build_overrides      = {},
-  $ca_certfile          = '/path/to/ca.crt',
-  $ca_keyfile           = '/path/to/ca.key',
-  $children             = ['masters', 'nodes', 'etcd', 'lb'],
-  $cluster_id           = 'default',
-  $cluster_network      = '10.128.0.0/14',
-  $console_ext_script   = '',
-  $console_ext_style    = '',
-  $dead_container_max   = 20,
-  $debug_level          = 2,
-  $default_subdomain    = "app.${::domain}",
-  $dns_ip               = '172.30.0.1',
-  $docker_options       = '--log-driver=journald',
-  $docker_upgrade       = false,
-  $docker_version       = '1.12.1',
-  $enable_api_auditing  = true,
-  $enable_cockpit       = true,
-  $etcd_hosts           = [],
-  $etcd_port            = 2379,
-  $ingress_ip_network   = '172.46.0.0/16',
-  $install_examples     = true,
-  $iptables_sync_period = '5s',
-  $labels               = {},
-  $lb_domain            = "console.${::domain}",
-  $logout_url           = "https://console.${::domain}",
-  $manage_firewall      = false,
-  $manage_origin_rpm    = false, # Requires $manage_repo be set to true
-  $manage_repo          = false,
-  $master_api_port      = 8443,
-  $master_config_file   = '/etc/origin/master/master-config.yaml',
-  $master_console_port  = 8443,
-  $manage_kube_config   = false,
-  $node_config_file     = '/etc/origin/node/node-config.yaml',
-  $portal_net           = '172.30.0.0/16',
-  $preserve_resolv_conf = 'present',
-  $release,
-  $reserved_system_cpu  = '500m',
-  $reserved_system_mem  = '1Gi',
-  $role                 = 'node', #For Ansible setup
-  $sdn_plugin           = 'redhat/openshift-ovs-subnet', # Other option 'redhat/openshift-ovs-multitenant'
-  $unschedulable_master = true,
-  $version              = '1.5.1'
+  Hash $build_defaults,
+  Hash $build_overrides,
+  $ca_certfile,
+  String $ca_keyfile,
+  Array[String] $children,
+  String $cluster_id,
+  String $cluster_network,
+  Optional[String] $console_ext_script,
+  Optional[String] $console_ext_style,
+  Integer $dead_container_max,
+  Integer[0, 5] $debug_level,
+  String $default_subdomain,
+  String $dns_ip,
+  String $dnsmasq_conf_file,
+  Array[String] $dnsmasq_servers,
+  Optional[String] $docker_options, # Can also be set via Docker module
+  Boolean $docker_upgrade,
+  String $docker_version,
+  Boolean $master_enable_api_auditing,
+  Boolean $enable_cockpit,
+  Optional[Array] $etcd_hosts,
+  Integer $etcd_port,
+  Boolean $firewall_ignore_dynamic_chains,
+  Boolean $firewall_input_chain_ignore,
+  String $ingress_ip_network,
+  Boolean $install_examples,
+  String $iptables_sync_period,
+  Hash $labels,
+  String $lb_domain,
+  String $logout_url,
+  Boolean $manage_firewall,
+  Boolean $manage_kube_config,
+  Boolean $manage_origin_rpm, # Requires $manage_repo be set to true
+  Boolean $manage_repo,
+  Integer $master_api_port,
+  String $master_config_file,
+  Integer $master_console_port,
+  Optional[String] $master_default_node_selector,
+  Boolean $master_enable_api_auditing,
+  Boolean $master_manage_service,
+  Boolean $master_manage_utilities_pkg,
+  String $master_service_name,
+  String $node_config_file,
+  Enum['hard', 'soft'] $node_eviction_type,
+  Boolean $node_manage_service,
+  String $node_name,
+  Integer $node_pod_max,
+  String $node_service_name,
+  String $portal_net,
+  Enum['absent', 'present'] $preserve_resolv_conf,
+  String $release,
+  String $reserved_system_cpu,
+  String $reserved_system_mem,
+  String $resolv_search_domains,
+  Enum['master', 'node'] $role, #For Ansible setup
+  String $sdn_plugin, # Other option 'redhat/openshift-ovs-multitenant'
+  Boolean $unschedulable_master,
+  String $version
 ) {
 
- validate_re($role, '^(master|node)$', 'Only master and node role types are supported')
-
+ # To feed Ansible setup script about cluster members:
  # Use PuppetDB for master, etcd, lb and node lookup? Format:
  # $nodes = {$::fqdn => "openshift_node_labels=\"{'region': 'primary', 'zone': 'default', 'virtual': '${::is_virtual}'}\""}
  # $lbs = { "lb.${::domain}" => 'containerized=false'}
@@ -91,17 +93,24 @@ class openshift(
  package { 'dnsmasq':
    ensure => 'installed',
  }
- 
+
  service { 'NetworkManager':
    ensure  => 'running',
-   enable => true,
+   enable  => true,
    require => Package['NetworkManager'],
  }
 
  service { 'dnsmasq':
    ensure  => 'running',
-   enable => true,
+   enable  => true,
    require => Package['dnsmasq'],
+ }
+
+ file { $dnsmasq_conf_file :
+   ensure  => 'present',
+   content => template('openshift/dnsmasq.conf.erb'),
+   mode    => '0775',
+   notify  => Service['dnsmasq'],
  }
 
  ini_setting { "preserve resolv.conf":
@@ -115,9 +124,9 @@ class openshift(
  }
 
  file { '/etc/resolv.conf':
-   ensure => 'present',
-   content => file('openshift/resolv.conf'),
-   mode => '0775'
+   ensure  => 'present',
+   content => template('openshift/resolv.conf.erb'),
+   mode    => '0775',
  }
 
  # Should add USE_PEERDNS and NM_CONTROLLED to the net interface used
@@ -175,6 +184,10 @@ class openshift(
        ],
      }
    }
+ }
+
+ if $manage_firewall {
+   contain openshift::firewall
  }
 
 }
