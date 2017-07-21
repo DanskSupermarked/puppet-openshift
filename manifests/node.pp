@@ -45,14 +45,14 @@ class openshift::node inherits openshift {
     }
   }
 
- if $openshift::node_service_name != '' and $openshift::node_manage_service {
-   service { $openshift::node_service_name:
-     ensure => 'running',
-   }
+  if $openshift::node_service_name != '' and $openshift::node_manage_service {
+    service { $openshift::node_service_name:
+      ensure => 'running',
+    }
 
-   Yaml_setting <| target == $openshift::config_file |> {
-     notify => Service[$openshift::node_service_name],
-   }
- }
+    Yaml_setting <| target == $openshift::config_file |> {
+      notify => Service[$openshift::node_service_name],
+    }
+  }
 
 }

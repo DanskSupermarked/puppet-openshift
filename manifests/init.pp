@@ -71,122 +71,122 @@ class openshift(
   String $version
 ) {
 
- # To feed Ansible setup script about cluster members:
- # Use PuppetDB for master, etcd, lb and node lookup? Format:
- # $nodes = {$::fqdn => "openshift_node_labels=\"{'region': 'primary', 'zone': 'default', 'virtual': '${::is_virtual}'}\""}
- # $lbs = { "lb.${::domain}" => 'containerized=false'}
+  # To feed Ansible setup script about cluster members:
+  # Use PuppetDB for master, etcd, lb and node lookup? Format:
+  # $nodes = {$::fqdn => "openshift_node_labels=\"{'region': 'primary', 'zone': 'default', 'virtual': '${::is_virtual}'}\""}
+  # $lbs = { "lb.${::domain}" => 'containerized=false'}
 
- if $manage_repo and !defined(Yumrepo['centos-openshift-origin']) {
-   yumrepo { 'centos-openshift-origin':
+  if $manage_repo and !defined(Yumrepo['centos-openshift-origin']) {
+    yumrepo { 'centos-openshift-origin':
       baseurl  => "http://mirror.centos.org/centos/${::operatingsystemmajrelease}/paas/${::architecture}/openshift-origin/",
       descr    => 'CentOS OpenShift Origin',
       gpgcheck => true,
       gpgkey   => "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-${::operatingsystemmajrelease}",
-   }
- }
+    }
+  }
 
- package { 'NetworkManager':
-   ensure => 'installed',
- }
+  package { 'NetworkManager':
+    ensure => 'installed',
+  }
 
- package { 'dnsmasq':
-   ensure => 'installed',
- }
+  package { 'dnsmasq':
+    ensure => 'installed',
+  }
 
- service { 'NetworkManager':
-   ensure  => 'running',
-   enable  => true,
-   require => Package['NetworkManager'],
- }
+  service { 'NetworkManager':
+    ensure  => 'running',
+    enable  => true,
+    require => Package['NetworkManager'],
+  }
 
- service { 'dnsmasq':
-   ensure  => 'running',
-   enable  => true,
-   require => Package['dnsmasq'],
- }
+  service { 'dnsmasq':
+    ensure  => 'running',
+    enable  => true,
+    require => Package['dnsmasq'],
+  }
 
- file { $dnsmasq_conf_file :
-   ensure  => 'present',
-   content => template('openshift/dnsmasq.conf.erb'),
-   mode    => '0775',
-   notify  => Service['dnsmasq'],
- }
+  file { $dnsmasq_conf_file :
+    ensure  => 'present',
+    content => template('openshift/dnsmasq.conf.erb'),
+    mode    => '0775',
+    notify  => Service['dnsmasq'],
+  }
 
- ini_setting { 'preserve_resolv.conf':
-   ensure  => $preserve_resolv_conf,
-   notify  => Service['NetworkManager'],
-   path    => '/etc/NetworkManager/NetworkManager.conf',
-   require => Package['NetworkManager'],
-   section => 'main',
-   setting => 'dns',
-   value   => 'none',
- }
+  ini_setting { 'preserve_resolv.conf':
+    ensure  => $preserve_resolv_conf,
+    notify  => Service['NetworkManager'],
+    path    => '/etc/NetworkManager/NetworkManager.conf',
+    require => Package['NetworkManager'],
+    section => 'main',
+    setting => 'dns',
+    value   => 'none',
+  }
 
- file { '/etc/resolv.conf':
-   ensure  => 'present',
-   content => template('openshift/resolv.conf.erb'),
-   mode    => '0775',
- }
+  file { '/etc/resolv.conf':
+    ensure  => 'present',
+    content => template('openshift/resolv.conf.erb'),
+    mode    => '0775',
+  }
 
  # Should add USE_PEERDNS and NM_CONTROLLED to the net interface used
 
- if $manage_kube_config {
-   if $role == 'node' {
-     $config_file = $node_config_file
-   } else {
-     $config_file = $master_config_file
-   }
+  if $manage_kube_config {
+    if $role == 'node' {
+      $config_file = $node_config_file
+    } else {
+      $config_file = $master_config_file
+    }
 
-   yaml_setting { 'kubeletArguments_system_reserved' :
-     target => $config_file,
-     key    => 'kubeletArguments/system-reserved',
-     type   => 'array',
-     value  => [
-       "cpu=${reserved_system_cpu},memory=${reserved_system_mem}"
-     ],
-   }
+    yaml_setting { 'kubeletArguments_system_reserved' :
+      target => $config_file,
+      key    => 'kubeletArguments/system-reserved',
+      type   => 'array',
+      value  => [
+        "cpu=${reserved_system_cpu},memory=${reserved_system_mem}"
+      ],
+    }
 
-   yaml_setting { 'kubeletArguments_dead_container_max' :
-     target => $config_file,
-     key    => 'kubeletArguments/maximum-dead-containers',
-     type   => 'array',
-     value  => [
-       "'${dead_container_max}'"
-     ],
-   }
+    yaml_setting { 'kubeletArguments_dead_container_max' :
+      target => $config_file,
+      key    => 'kubeletArguments/maximum-dead-containers',
+      type   => 'array',
+      value  => [
+        "'${dead_container_max}'"
+      ],
+    }
 
-   yaml_setting { 'kubeletArguments_image_gc_low_threshold' :
-     target => $config_file,
-     key    => 'kubeletArguments/image-gc-low-threshold',
-     type   => 'array',
-     value  => [
-       '60'
-     ],
-   }
+    yaml_setting { 'kubeletArguments_image_gc_low_threshold' :
+      target => $config_file,
+      key    => 'kubeletArguments/image-gc-low-threshold',
+      type   => 'array',
+      value  => [
+        '60'
+      ],
+    }
 
-   yaml_setting { 'kubeletArguments_image_gc_high_threshold' :
-     target => $config_file,
-     key    => 'kubeletArguments/image-gc-high-threshold',
-     type   => 'array',
-     value  => [
-       '80'
-     ],
-   }
+    yaml_setting { 'kubeletArguments_image_gc_high_threshold' :
+      target => $config_file,
+      key    => 'kubeletArguments/image-gc-high-threshold',
+      type   => 'array',
+      value  => [
+        '80'
+      ],
+    }
 
-   if versioncmp($docker_version, '1.9.0') >= 0 { # Starting from Docker 1.9, parallel image pulls are recommanded for speed.
-     yaml_setting { 'kubeletArguments_serialize_image_pulls' :
-       target => $config_file,
-       key    => 'kubeletArguments/system-serialize-image-pulls',
-       type   => 'array',
-       value  => [
-         false
-       ],
-     }
-   }
- }
+    if versioncmp($docker_version, '1.9.0') >= 0 { # Starting from Docker 1.9, parallel image pulls are recommanded for speed.
+      yaml_setting { 'kubeletArguments_serialize_image_pulls' :
+        target => $config_file,
+        key    => 'kubeletArguments/system-serialize-image-pulls',
+        type   => 'array',
+        value  => [
+          false
+        ],
+      }
+    }
+  }
 
- if $manage_firewall {
-   contain openshift::firewall
- }
+  if $manage_firewall {
+    contain openshift::firewall
+  }
 
 }
