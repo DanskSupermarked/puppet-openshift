@@ -20,11 +20,16 @@ class openshift::node inherits openshift {
     }
   }
 
-  if $openshift::manage_kube_config {
-    file { $openshift::node_config_file:
-      ensure => 'file',
-    }
+  file { $openshift::node_config_file:
+    ensure => 'file',
+  }
 
+  file { $openshift::node_sysconfig_file :
+    ensure  => 'present',
+    content => template('openshift/sysconfig_openshift_node.erb'),
+  }
+
+  if $openshift::manage_kube_config {
     yaml_setting { "kubeletArguments_eviction_${openshift::node_eviction_type}" :
       target => $openshift::config_file,
       key    => "kubeletArguments/${openshift::node_eviction_type}",
@@ -47,7 +52,8 @@ class openshift::node inherits openshift {
 
   if $openshift::node_service_name != '' and $openshift::node_manage_service {
     service { $openshift::node_service_name:
-      ensure => 'running',
+      ensure    => 'running',
+      subscribe => File[$openshift::node_sysconfig_file],
     }
 
     Yaml_setting <| target == $openshift::config_file |> {

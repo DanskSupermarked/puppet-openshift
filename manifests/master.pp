@@ -34,11 +34,17 @@ class openshift::master inherits openshift {
     }
   }
 
+  file { $openshift::master_config_file :
+    ensure  => 'file',
+    replace => false,
+  }
+
+  file { $openshift::master_sysconfig_file :
+    ensure  => 'present',
+    content => template('openshift/sysconfig_openshift_master.erb'),
+  }
+
   if $openshift::manage_kube_config {
-    file { $openshift::master_config_file :
-      ensure  => 'file',
-      replace => false,
-    }
 
     if $openshift::master_default_node_selector != '' {
       yaml_setting { 'projectConfig_default_node_selector' :
@@ -59,7 +65,8 @@ class openshift::master inherits openshift {
 
   if $openshift::master_service_name != '' and $openshift::master_manage_service {
     service { $openshift::master_service_name:
-      ensure => 'running',
+      ensure    => 'running',
+      subscribe => File[$openshift::master_sysconfig_file],
     }
 
     Yaml_setting <| target == $openshift::master_config_file |> {
