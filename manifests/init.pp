@@ -30,7 +30,6 @@ class openshift(
   Optional[String] $docker_options, # Can also be set via Docker module
   Boolean $docker_upgrade,
   String $docker_version,
-  Boolean $master_enable_api_auditing,
   Boolean $enable_cockpit,
   Optional[Array] $etcd_hosts,
   Integer $etcd_port,

@@ -1,4 +1,5 @@
-# puppet-openshift
+# Manage OpenShift 3 with Puppet
+[![Build Status](https://travis-ci.org/DanskSupermarked/puppet-openshift.svg?branch=master)](https://travis-ci.org/DanskSupermarked/puppet-openshift)
 Work in progress -> need to call and manage Ansible.
 
 This module is meant to go a step further than the Ansible script installing OpenShift.
