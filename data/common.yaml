@@ -52,7 +52,7 @@ openshift::node_log_level: 0
 openshift::node_manage_kube_config: false
 openshift::node_manage_service: false
 openshift::node_name: '%{::fqdn}'
-openshift::node_pod_max: %{::processorcount}
+openshift::node_pod_max: '%{::processorcount}'
 openshift::node_service_name: origin-node
 openshift::node_sysconfig_file: /etc/sysconfig/origin-node
 openshift::portal_net: '172.30.0.0/16'
