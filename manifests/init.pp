@@ -68,7 +68,7 @@ class openshift(
   String $reserved_system_cpu,
   String $reserved_system_mem,
   String $resolv_search_domains,
-  Enum['master', 'node'] $role, #For Ansible setup
+  Enum['master', 'node'] $role,
   String $sdn_plugin, # Other option 'redhat/openshift-ovs-multitenant'
   Boolean $unschedulable_master,
   String $version
@@ -133,13 +133,15 @@ class openshift(
 
   # Should add USE_PEERDNS and NM_CONTROLLED to the net interface used
 
-  if $manage_kube_config {
-    if $role == 'node' {
-      $config_file = $node_config_file
-    } else {
-      $config_file = $master_config_file
-    }
+  if $role == 'node' {
+    $config_file = $node_config_file
+    contain openshift::node
+  } else {
+    $config_file = $master_config_file
+    contain openshift::master
+  }
 
+  if $manage_kube_config {
     yaml_setting { 'kubeletArguments_system_reserved' :
       target => $config_file,
       key    => 'kubeletArguments/system-reserved',

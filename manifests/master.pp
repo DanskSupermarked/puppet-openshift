@@ -45,7 +45,6 @@ class openshift::master inherits openshift {
   }
 
   if $openshift::manage_kube_config {
-
     if $openshift::master_default_node_selector != '' {
       yaml_setting { 'projectConfig_default_node_selector' :
         target => $openshift::master_config_file,
