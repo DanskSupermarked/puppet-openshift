@@ -61,6 +61,7 @@ openshift::release: 3.5
 openshift::reserved_system_cpu: 500m
 openshift::reserved_system_mem: 1Gi
 openshift::resolv_search_domains: 'local %{::domain}'
+openshift::role: node
 openshift::sdn_plugin: redhat/openshift-ovs-subnet
 openshift::unschedulable_master: true
 openshift::version: '1.5.1'
