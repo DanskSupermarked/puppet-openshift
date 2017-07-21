@@ -21,7 +21,7 @@ class openshift::node inherits openshift {
   }
 
   if $openshift::manage_kube_config {
-    file { $node_config:
+    file { $openshift::node_config_file:
       ensure => 'file',
     }
 
@@ -40,7 +40,7 @@ class openshift::node inherits openshift {
       key    => 'kubeletArguments/max-pods',
       type   => 'array',
       value  => [
-        "${openshift::pod_max}" # Kube expects an array of strings
+        "'${openshift::pod_max}'" # Kube expects an array of strings
       ],
     }
   }

@@ -41,18 +41,18 @@ class openshift::master inherits openshift {
     }
 
     if $openshift::master_default_node_selector != '' {
-      yaml_setting { "projectConfig_default_node_selector" :
+      yaml_setting { 'projectConfig_default_node_selector' :
         target => $openshift::master_config_file,
-        key    => "projectConfig/defaultNodeSelector",
+        key    => 'projectConfig/defaultNodeSelector',
         type   => 'string',
         value  => $openshift::master_default_node_selector
       }
     }
   }
 
-  yaml_setting { "master_enable_api_auditing" :
+  yaml_setting { 'master_enable_api_auditing' :
     target => $openshift::master_config_file,
-    key    => "auditConfig/enabled",
+    key    => 'auditConfig/enabled',
     type   => 'boolean', # https://github.com/reidmv/puppet-module-yamlfile/issues/12
     value  => $openshift::master_enable_api_auditing
   }

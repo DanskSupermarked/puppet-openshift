@@ -112,7 +112,7 @@ class openshift(
    notify  => Service['dnsmasq'],
  }
 
- ini_setting { "preserve resolv.conf":
+ ini_setting { 'preserve_resolv.conf':
    ensure  => $preserve_resolv_conf,
    notify  => Service['NetworkManager'],
    path    => '/etc/NetworkManager/NetworkManager.conf',
@@ -151,7 +151,7 @@ class openshift(
      key    => 'kubeletArguments/maximum-dead-containers',
      type   => 'array',
      value  => [
-       "${dead_container_max}"
+       "'${dead_container_max}'"
      ],
    }
 
@@ -179,7 +179,7 @@ class openshift(
        key    => 'kubeletArguments/system-serialize-image-pulls',
        type   => 'array',
        value  => [
-         'false'
+         false
        ],
      }
    }
