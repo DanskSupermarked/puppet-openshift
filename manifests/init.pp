@@ -128,7 +128,7 @@ class openshift(
     mode    => '0775',
   }
 
- # Should add USE_PEERDNS and NM_CONTROLLED to the net interface used
+  # Should add USE_PEERDNS and NM_CONTROLLED to the net interface used
 
   if $manage_kube_config {
     if $role == 'node' {
