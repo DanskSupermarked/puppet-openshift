@@ -10,6 +10,8 @@ openshift::children:
   - nodes
 openshift::cluster_id: default
 openshift::cluster_network: '10.128.0.0/14'
+openshift::console_ext_script:
+openshift::console_ext_style:
 openshift::dead_container_max: 20
 openshift::debug_level: 2
 openshift::default_subdomain: 'app.%{::domain}'
@@ -21,8 +23,9 @@ openshift::dnsmasq_conf_file: '/etc/dnsmasq.d/openshift-dns.conf'
 openshift::dnsmasq_servers:
   - '8.8.8.8'
 openshift::enable_cockpit: false
+openshift::etcd_hosts:
 openshift::etcd_port: 2379
-openshift::firewall_ignore_dynamic_rules: true
+openshift::firewall_ignore_dynamic_chains: true
 openshift::firewall_input_chain_ignore: false
 openshift::ingress_ip_network: '172.46.0.0/16'
 openshift::install_examples: true
@@ -57,7 +60,7 @@ openshift::node_service_name: origin-node
 openshift::node_sysconfig_file: /etc/sysconfig/origin-node
 openshift::portal_net: '172.30.0.0/16'
 openshift::preserve_resolv_conf: present
-openshift::release: 3.5
+openshift::release: '3.5'
 openshift::reserved_system_cpu: 500m
 openshift::reserved_system_mem: 1Gi
 openshift::resolv_search_domains: 'local %{::domain}'

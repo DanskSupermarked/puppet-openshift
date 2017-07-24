@@ -60,7 +60,7 @@ class openshift(
   Integer[0, 8] $node_log_level,
   Boolean $node_manage_service,
   String $node_name,
-  Integer $node_pod_max,
+  Optional[String] $node_pod_max,
   String $node_service_name,
   String $portal_net,
   Enum['absent', 'present'] $preserve_resolv_conf,
