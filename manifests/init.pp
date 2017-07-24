@@ -14,7 +14,7 @@
 class openshift(
   Hash $build_defaults,
   Hash $build_overrides,
-  $ca_certfile,
+  String $ca_certfile,
   String $ca_keyfile,
   Array[String] $children,
   String $cluster_id,
