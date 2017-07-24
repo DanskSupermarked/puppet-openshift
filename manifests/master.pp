@@ -40,7 +40,7 @@ class openshift::master inherits openshift {
   }
 
   file { $openshift::master_sysconfig_file :
-    ensure  => 'present',
+    ensure  => 'file',
     content => template('openshift/sysconfig_openshift_master.erb'),
   }
 

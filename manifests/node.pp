@@ -25,7 +25,7 @@ class openshift::node inherits openshift {
   }
 
   file { $openshift::node_sysconfig_file :
-    ensure  => 'present',
+    ensure  => 'file',
     content => template('openshift/sysconfig_openshift_node.erb'),
   }
 
