@@ -25,6 +25,7 @@ class openshift::firewall inherits openshift {
     proto => 'all',
   }
 
+  # If using Hiera and having nodes not running, Openshift, using Hiera instead.
   if $openshift::firewall_input_chain_ignore {
     firewallchain { 'INPUT:filter:IPv4':
       ignore => [
