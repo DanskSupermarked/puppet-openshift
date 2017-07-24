@@ -1,3 +1,4 @@
 # Managed by Puppet
+# Done as expected by /etc/NetworkManager/dispatcher.d/99-origin-dns.sh
 search <%= @resolv_search_domains %>
-nameserver localhost
+nameserver <%= @resolv_nameserver %>

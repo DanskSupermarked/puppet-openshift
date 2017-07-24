@@ -68,6 +68,7 @@ class openshift(
   String $release,
   String $reserved_system_cpu,
   String $reserved_system_mem,
+  String $resolv_nameserver,
   String $resolv_search_domains,
   Enum['master', 'node'] $role,
   String $sdn_plugin, # Other option 'redhat/openshift-ovs-multitenant'
