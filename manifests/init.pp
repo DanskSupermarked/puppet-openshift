@@ -62,6 +62,7 @@ class openshift(
   String $node_name,
   Optional[String] $node_pod_max,
   String $node_service_name,
+  String $node_sysconfig_file,
   String $portal_net,
   Enum['absent', 'present'] $preserve_resolv_conf,
   String $release,
