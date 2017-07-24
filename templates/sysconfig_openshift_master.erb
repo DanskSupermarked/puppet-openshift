@@ -1,5 +1,5 @@
-OPTIONS=--loglevel=<%= @openshift::master_log_level %>
-CONFIG_FILE=<%= @openshift::master_config_file %>
+OPTIONS=--loglevel=<%= scope['openshift::master_log_level'] %>
+CONFIG_FILE=<%= scope['openshift::master_config_file'] %>
 
 # Proxy configuration
 # See https://docs.openshift.com/enterprise/latest/install_config/install/advanced_install.html#configuring-global-proxy
