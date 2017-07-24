@@ -12,8 +12,8 @@
 # Copyright 2017 Dansk Supermarked.
 #
 class openshift(
-  Hash $build_defaults,
-  Hash $build_overrides,
+  Optional[Hash] $build_defaults,
+  Optional[Hash] $build_overrides,
   String $ca_certfile,
   String $ca_keyfile,
   Array[String] $children,
