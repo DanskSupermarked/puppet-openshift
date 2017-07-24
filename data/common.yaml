@@ -37,11 +37,13 @@ openshift::manage_firewall: false
 openshift::manage_kube_config: false
 openshift::manage_origin_rpm: false
 openshift::manage_repo: false
-openshift::master_api_port: 8443
+openshift::master_api_port: 443
 openshift::master_config_file: /etc/origin/master/master-config.yaml
 openshift::master_console_port: 443
+openshift::master_controller_port: 8444
 openshift::master_enable_api_auditing: false
 openshift::master_default_node_selector:
+openshift::master_ha_cluster: false
 openshift::master_log_level: 0
 openshift::master_manage_kube_config: false
 openshift::master_manage_origin_rpm: false
@@ -49,6 +51,7 @@ openshift::master_manage_service: false
 openshift::master_manage_utilities_pkg: true
 openshift::master_service_name: origin-master
 openshift::master_sysconfig_file: /etc/sysconfig/origin-master
+openshift::master_url_internal: 'https://${::fqdn}.internal'
 openshift::node_config_file: /etc/origin/node/node-config.yaml
 openshift::node_eviction_type: hard
 openshift::node_log_level: 0

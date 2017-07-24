@@ -1,0 +1,2 @@
+OPTIONS=--loglevel=<%= scope['openshift::master_log_level'] %> --listen=https://0.0.0.0:<%= scope['openshift::master_controller_port'] %>
+CONFIG_FILE=<%= scope['openshift::master_config_file'] %>
