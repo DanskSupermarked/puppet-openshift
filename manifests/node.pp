@@ -32,7 +32,7 @@ class openshift::node inherits openshift {
 
   if $openshift::manage_kube_config {
     yaml_setting { "kubeletArguments_eviction_${openshift::node_eviction_type}" :
-      target => $openshift::config_file,
+      target => $openshift::node_config_file,
       key    => "kubeletArguments/${openshift::node_eviction_type}",
       type   => 'array',
       value  => [
@@ -42,7 +42,7 @@ class openshift::node inherits openshift {
 
     # openshift_node_kubelet_args={'pods-per-core': ['10'], 'max-pods': ['250'], 'image-gc-high-threshold': ['90'], 'image-gc-low-threshold': ['80']}
     yaml_setting { 'kubeletArguments_max_pods' :
-      target => $openshift::config_file,
+      target => $openshift::node_config_file,
       key    => 'kubeletArguments/max-pods',
       type   => 'array',
       value  => [
@@ -51,25 +51,25 @@ class openshift::node inherits openshift {
     }
 
     yaml_setting { 'kubeletArguments_system_reserved' :
-      target => $config_file,
+      target => $openshift::node_config_file,
       key    => 'kubeletArguments/system-reserved',
       type   => 'array',
       value  => [
-        "cpu=${reserved_system_cpu},memory=${reserved_system_mem}"
+        "cpu=${openshift::reserved_system_cpu},memory=${openshift::reserved_system_mem}"
       ],
     }
 
     yaml_setting { 'kubeletArguments_dead_container_max' :
-      target => $config_file,
+      target => $openshift::node_config_file,
       key    => 'kubeletArguments/maximum-dead-containers',
       type   => 'array',
       value  => [
-        "'${dead_container_max}'"
+        "'${openshift::dead_container_max}'"
       ],
     }
 
     yaml_setting { 'kubeletArguments_image_gc_low_threshold' :
-      target => $config_file,
+      target => $openshift::node_config_file,
       key    => 'kubeletArguments/image-gc-low-threshold',
       type   => 'array',
       value  => [
@@ -78,7 +78,7 @@ class openshift::node inherits openshift {
     }
 
     yaml_setting { 'kubeletArguments_image_gc_high_threshold' :
-      target => $config_file,
+      target => $openshift::node_config_file,
       key    => 'kubeletArguments/image-gc-high-threshold',
       type   => 'array',
       value  => [
@@ -86,9 +86,9 @@ class openshift::node inherits openshift {
       ],
     }
 
-    if versioncmp($docker_version, '1.9.0') >= 0 { # Starting from Docker 1.9, parallel image pulls are recommanded for speed.
+    if versioncmp($openshift::docker_version, '1.9.0') >= 0 { # Starting from Docker 1.9, parallel image pulls are recommanded for speed.
       yaml_setting { 'kubeletArguments_serialize_image_pulls' :
-        target => $config_file,
+        target => $openshift::node_config_file,
         key    => 'kubeletArguments/system-serialize-image-pulls',
         type   => 'array',
         value  => [

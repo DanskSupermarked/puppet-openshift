@@ -141,7 +141,7 @@ class openshift(
   contain openshift::node
   if $role == 'master' {
     contain openshift::master
-  } 
+  }
 
   if $manage_firewall {
     contain openshift::firewall
