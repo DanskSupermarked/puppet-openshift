@@ -30,7 +30,6 @@ openshift::firewall_input_chain_ignore: false
 openshift::ingress_ip_network: '172.46.0.0/16'
 openshift::install_examples: true
 openshift::iptables_sync_period: 5s
-openshift::labels:
 openshift::lb_domain:
 openshift::logout_url: 'https://console.%{::domain}'
 openshift::manage_firewall: false
@@ -54,6 +53,7 @@ openshift::master_sysconfig_file: /etc/sysconfig/origin-master
 openshift::master_url_internal: 'https://%{::fqdn}.internal'
 openshift::node_config_file: /etc/origin/node/node-config.yaml
 openshift::node_eviction_type: hard
+openshift::node_labels:
 openshift::node_log_level: 0
 openshift::node_manage_kube_config: false
 openshift::node_manage_service: false

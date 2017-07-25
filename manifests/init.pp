@@ -1,14 +1,15 @@
-# Class: openshift
-# ===========================
+# openshift
+#
+# @param docker_options [Optional[String]] Can also be set via Docker module.
+# @param manage_origin_rpm [Boolean] Requires $manage_repo be set to true.
+# @param node_labels [Optional[Array[String]]] An array of strings in the "key=value" format.
 #
 # Authors
 # -------
-#
 # Benjamin Merot <benjamin.merot@dsg.dk>
 #
 # Copyright
 # ---------
-#
 # Copyright 2017 Dansk Supermarked.
 #
 class openshift(
@@ -27,7 +28,7 @@ class openshift(
   String $dns_ip,
   String $dnsmasq_conf_file,
   Array[String] $dnsmasq_servers,
-  Optional[String] $docker_options, # Can also be set via Docker module
+  Optional[String] $docker_options,
   Boolean $docker_upgrade,
   String $docker_version,
   Boolean $enable_cockpit,
@@ -38,12 +39,11 @@ class openshift(
   String $ingress_ip_network,
   Boolean $install_examples,
   String $iptables_sync_period,
-  Optional[Hash] $labels,
   Optional[String] $lb_domain,
   String $logout_url,
   Boolean $manage_firewall,
   Boolean $manage_kube_config,
-  Boolean $manage_origin_rpm, # Requires $manage_repo be set to true
+  Boolean $manage_origin_rpm,
   Boolean $manage_repo,
   Integer $master_api_port,
   String $master_config_file,
@@ -60,6 +60,7 @@ class openshift(
   String $master_url_internal,
   String $node_config_file,
   Enum['hard', 'soft'] $node_eviction_type,
+  Optional[Array[String]] $node_labels,
   Integer[0, 8] $node_log_level,
   Boolean $node_manage_service,
   String $node_name,
@@ -74,7 +75,7 @@ class openshift(
   String $resolv_nameserver,
   String $resolv_search_domains,
   Enum['master', 'node'] $role,
-  String $sdn_plugin, # Other option 'redhat/openshift-ovs-multitenant'
+  Enum['redhat/openshift-ovs-multitenant', 'redhat/openshift-ovs-subnet'] $sdn_plugin,
   Boolean $unschedulable_master,
   String $version
 ) {

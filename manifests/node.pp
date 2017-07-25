@@ -96,6 +96,15 @@ class openshift::node inherits openshift {
         ],
       }
     }
+
+    if $openshift::node_labels {
+      yaml_setting { 'kubeletArguments_node_labels' :
+        target => $openshift::node_config_file,
+        key    => 'kubeletArguments/node-labels',
+        type   => 'array',
+        value  => $openshift::node_labels,
+      }
+    }
   }
 
   if $openshift::node_service_name != '' and $openshift::node_manage_service {
