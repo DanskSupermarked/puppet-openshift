@@ -21,7 +21,8 @@ class openshift::node inherits openshift {
   }
 
   file { $openshift::node_config_file:
-    ensure => 'file',
+    ensure  => 'file',
+    replace => false,
   }
 
   file { $openshift::node_sysconfig_file :
@@ -37,7 +38,7 @@ class openshift::node inherits openshift {
       value  => [
         'memory.available<500Mi'
       ],
-  }
+    }
 
     # openshift_node_kubelet_args={'pods-per-core': ['10'], 'max-pods': ['250'], 'image-gc-high-threshold': ['90'], 'image-gc-low-threshold': ['80']}
     yaml_setting { 'kubeletArguments_max_pods' :
@@ -47,6 +48,53 @@ class openshift::node inherits openshift {
       value  => [
         "'${openshift::pod_max}'" # Kube expects an array of strings
       ],
+    }
+
+    yaml_setting { 'kubeletArguments_system_reserved' :
+      target => $config_file,
+      key    => 'kubeletArguments/system-reserved',
+      type   => 'array',
+      value  => [
+        "cpu=${reserved_system_cpu},memory=${reserved_system_mem}"
+      ],
+    }
+
+    yaml_setting { 'kubeletArguments_dead_container_max' :
+      target => $config_file,
+      key    => 'kubeletArguments/maximum-dead-containers',
+      type   => 'array',
+      value  => [
+        "'${dead_container_max}'"
+      ],
+    }
+
+    yaml_setting { 'kubeletArguments_image_gc_low_threshold' :
+      target => $config_file,
+      key    => 'kubeletArguments/image-gc-low-threshold',
+      type   => 'array',
+      value  => [
+        '60'
+      ],
+    }
+
+    yaml_setting { 'kubeletArguments_image_gc_high_threshold' :
+      target => $config_file,
+      key    => 'kubeletArguments/image-gc-high-threshold',
+      type   => 'array',
+      value  => [
+        '80'
+      ],
+    }
+
+    if versioncmp($docker_version, '1.9.0') >= 0 { # Starting from Docker 1.9, parallel image pulls are recommanded for speed.
+      yaml_setting { 'kubeletArguments_serialize_image_pulls' :
+        target => $config_file,
+        key    => 'kubeletArguments/system-serialize-image-pulls',
+        type   => 'array',
+        value  => [
+          false
+        ],
+      }
     }
   }
 
