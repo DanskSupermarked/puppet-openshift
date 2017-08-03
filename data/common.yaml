@@ -23,7 +23,8 @@ openshift::dnsmasq_conf_file: '/etc/dnsmasq.d/openshift-dns.conf'
 openshift::dnsmasq_servers:
   - '8.8.8.8'
 openshift::enable_cockpit: false
-openshift::etcd_hosts:
+openshift::etcd_manage_rpm: false
+openshift::etcd_manage_service: false
 openshift::etcd_port: 2379
 openshift::firewall_ignore_dynamic_chains: true
 openshift::firewall_input_chain_ignore: false

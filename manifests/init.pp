@@ -32,7 +32,8 @@ class openshift(
   Boolean $docker_upgrade,
   String $docker_version,
   Boolean $enable_cockpit,
-  Optional[Array] $etcd_hosts,
+  Boolean $etcd_manage_rpm,
+  Boolean $etcd_manage_service,
   Integer $etcd_port,
   Boolean $firewall_ignore_dynamic_chains,
   Boolean $firewall_input_chain_ignore,
@@ -74,7 +75,7 @@ class openshift(
   String $reserved_system_mem,
   String $resolv_nameserver,
   String $resolv_search_domains,
-  Enum['master', 'node'] $role,
+  Enum['etcd', 'master', 'node'] $role,
   Enum['redhat/openshift-ovs-multitenant', 'redhat/openshift-ovs-subnet'] $sdn_plugin,
   Boolean $unschedulable_master,
   String $version
@@ -98,14 +99,14 @@ class openshift(
     ensure => 'installed',
   }
 
-  package { 'dnsmasq':
-    ensure => 'installed',
-  }
-
   service { 'NetworkManager':
     ensure  => 'running',
     enable  => true,
     require => Package['NetworkManager'],
+  }
+
+  package { 'dnsmasq':
+    ensure => 'installed',
   }
 
   service { 'dnsmasq':
@@ -139,9 +140,13 @@ class openshift(
 
   # Should add USE_PEERDNS and NM_CONTROLLED to the net interface used
 
-  contain openshift::node
-  if $role == 'master' {
+  if $role == 'etcd' {
+    contain openshift::etcd
+  } elsif $role == 'master' {
     contain openshift::master
+    contain openshift::node
+  } else {
+    contain openshift::node
   }
 
   if $manage_firewall {
