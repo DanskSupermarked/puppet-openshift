@@ -8,6 +8,7 @@ openshift::children:
   - lb
   - masters
   - nodes
+openshift::cluster_domain: '%{::domain}.local'
 openshift::cluster_id: default
 openshift::cluster_network: '10.128.0.0/14'
 openshift::console_ext_script:
@@ -46,7 +47,6 @@ openshift::master_default_node_selector:
 openshift::master_ha_cluster: false
 openshift::master_log_level: 0
 openshift::master_manage_kube_config: false
-openshift::master_manage_origin_rpm: false
 openshift::master_manage_service: false
 openshift::master_manage_utilities_pkg: true
 openshift::master_service_name: origin-master
@@ -59,6 +59,7 @@ openshift::node_log_level: 0
 openshift::node_manage_kube_config: false
 openshift::node_manage_service: false
 openshift::node_name: '%{::fqdn}'
+openshift::node_package_version: '1.5.1'
 openshift::node_pod_max: '%{::processorcount}'
 openshift::node_service_name: origin-node
 openshift::node_sysconfig_file: /etc/sysconfig/origin-node
@@ -73,3 +74,7 @@ openshift::role: node
 openshift::sdn_plugin: redhat/openshift-ovs-subnet
 openshift::unschedulable_master: true
 openshift::version: '1.5.1'
+openshift::yum_baseurl: 'http://mirror.centos.org/centos/%{::operatingsystemmajrelease}/paas/%{::architecture}/openshift-origin/'
+openshift::yum_gpgkey: 'http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-%{::operatingsystemmajrelease}'
+openshift::yum_repo_description: 'CentOS OpenShift Origin'
+openshift::yum_repo_name: 'centos-openshift-origin'

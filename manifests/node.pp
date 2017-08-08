@@ -16,7 +16,7 @@ class openshift::node inherits openshift {
   if $openshift::manage_origin_rpm and !defined(Package['origin-node']) {
     package { 'origin-node':
       ensure  => $openshift::version,
-      require => Yumrepo['centos-openshift-origin'],
+      require => Yumrepo[$openshift::yum_repo_name],
     }
   }
 
@@ -31,6 +31,12 @@ class openshift::node inherits openshift {
   }
 
   if $openshift::manage_kube_config {
+    file { $openshift::node_config_file :
+      ensure  => 'file',
+      content => template('openshift/node-config.yaml.erb'),
+      replace => false,
+    }
+
     yaml_setting { "kubeletArguments_eviction_${openshift::node_eviction_type}" :
       target => $openshift::node_config_file,
       key    => "kubeletArguments/${openshift::node_eviction_type}",
@@ -104,6 +110,10 @@ class openshift::node inherits openshift {
         type   => 'array',
         value  => $openshift::node_labels,
       }
+    }
+
+    Yaml_setting <| target == $openshift::config_file |> {
+      require => File[$openshift::node_config_file],
     }
   }
 

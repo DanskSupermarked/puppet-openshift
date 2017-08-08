@@ -4,6 +4,8 @@ defaults:
   datadir: data
   data_hash: yaml_data
 hierarchy:
+  - name: "OS maj release"
+    path: "%{facts.os.name}_%{facts.os.release.major}.yaml"
   - name: "OS family maj release"
     path: "%{facts.os.family}_%{facts.os.release.major}.yaml"
   - name: "OS family"

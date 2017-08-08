@@ -30,7 +30,7 @@ class openshift::master inherits openshift {
   if $openshift::manage_origin_rpm and !defined(Package['origin-master']) {
     package { 'origin-master':
       ensure  => $openshift::version,
-      require => Yumrepo['centos-openshift-origin'],
+      require => Yumrepo[$openshift::yum_repo_name],
     }
   }
 

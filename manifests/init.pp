@@ -18,6 +18,7 @@ class openshift(
   Optional[String] $ca_certfile,
   Optional[String] $ca_keyfile,
   Array[String] $children,
+  String $cluster_domain,
   String $cluster_id,
   String $cluster_network,
   Optional[String] $console_ext_script,
@@ -78,7 +79,11 @@ class openshift(
   Enum['etcd', 'master', 'node'] $role,
   Enum['redhat/openshift-ovs-multitenant', 'redhat/openshift-ovs-subnet'] $sdn_plugin,
   Boolean $unschedulable_master,
-  String $version
+  String $version,
+  String $yum_baseurl,
+  String $yum_gpgkey,
+  String $yum_repo_description,
+  String $yum_repo_name
 ) {
 
   # To feed Ansible setup script about cluster members:
@@ -86,12 +91,12 @@ class openshift(
   # $nodes = {$::fqdn => "openshift_node_labels=\"{'region': 'primary', 'zone': 'default', 'virtual': '${::is_virtual}'}\""}
   # $lbs = { "lb.${::domain}" => 'containerized=false'}
 
-  if $manage_repo and !defined(Yumrepo['centos-openshift-origin']) {
-    yumrepo { 'centos-openshift-origin':
-      baseurl  => "http://mirror.centos.org/centos/${::operatingsystemmajrelease}/paas/${::architecture}/openshift-origin/",
-      descr    => 'CentOS OpenShift Origin',
+  if $manage_repo and !defined(Yumrepo[$yum_repo_name]) {
+    yumrepo { $yum_repo_name :
+      baseurl  => $yum_baseurl,
+      descr    => $yum_repo_description,
       gpgcheck => true,
-      gpgkey   => "http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-${::operatingsystemmajrelease}",
+      gpgkey   => $yum_gpgkey,
     }
   }
 
