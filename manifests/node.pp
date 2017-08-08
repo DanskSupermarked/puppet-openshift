@@ -20,11 +20,6 @@ class openshift::node inherits openshift {
     }
   }
 
-  file { $openshift::node_config_file:
-    ensure  => 'file',
-    replace => false,
-  }
-
   file { $openshift::node_sysconfig_file :
     ensure  => 'file',
     content => template('openshift/sysconfig_openshift_node.erb'),
