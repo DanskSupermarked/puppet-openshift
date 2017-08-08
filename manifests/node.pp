@@ -47,7 +47,7 @@ class openshift::node inherits openshift {
       key    => 'kubeletArguments/max-pods',
       type   => 'array',
       value  => [
-        "'${openshift::pod_max}'" # Kube expects an array of strings
+        "${openshift::node_pod_max}" # Kube expects an array of strings
       ],
     }
 
@@ -65,7 +65,7 @@ class openshift::node inherits openshift {
       key    => 'kubeletArguments/maximum-dead-containers',
       type   => 'array',
       value  => [
-        "'${openshift::dead_container_max}'"
+        "${openshift::dead_container_max}"
       ],
     }
 
