@@ -23,7 +23,7 @@ class openshift(
   String $cluster_network,
   Optional[String] $console_ext_script,
   Optional[String] $console_ext_style,
-  Integer $dead_container_max,
+  Optional[String] $dead_container_max,
   Integer[0, 5] $debug_level,
   String $default_subdomain,
   String $dns_ip,

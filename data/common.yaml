@@ -13,7 +13,7 @@ openshift::cluster_id: default
 openshift::cluster_network: '10.128.0.0/14'
 openshift::console_ext_script:
 openshift::console_ext_style:
-openshift::dead_container_max: 20
+openshift::dead_container_max: '20'
 openshift::debug_level: 2
 openshift::default_subdomain: 'app.%{::domain}'
 openshift::dns_ip: '172.30.0.1'
