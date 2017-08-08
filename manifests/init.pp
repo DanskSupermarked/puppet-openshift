@@ -81,6 +81,7 @@ class openshift(
   Boolean $unschedulable_master,
   String $version,
   String $yum_baseurl,
+  Boolean $yum_gpgcheck,
   String $yum_gpgkey,
   String $yum_repo_description,
   String $yum_repo_name
@@ -95,7 +96,7 @@ class openshift(
     yumrepo { $yum_repo_name :
       baseurl  => $yum_baseurl,
       descr    => $yum_repo_description,
-      gpgcheck => true,
+      gpgcheck => $yum_gpgcheck,
       gpgkey   => $yum_gpgkey,
     }
   }

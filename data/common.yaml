@@ -75,6 +75,7 @@ openshift::sdn_plugin: redhat/openshift-ovs-subnet
 openshift::unschedulable_master: true
 openshift::version: '1.5.1'
 openshift::yum_baseurl: 'http://mirror.centos.org/centos/%{::operatingsystemmajrelease}/paas/%{::architecture}/openshift-origin/'
+openshift::yum_gpgcheck: true
 openshift::yum_gpgkey: 'http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-%{::operatingsystemmajrelease}'
 openshift::yum_repo_description: 'CentOS OpenShift Origin'
 openshift::yum_repo_name: 'centos-openshift-origin'
