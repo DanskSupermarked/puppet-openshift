@@ -25,11 +25,35 @@ class openshift::node inherits openshift {
     content => template('openshift/sysconfig_openshift_node.erb'),
   }
 
+  if $openshift::node_manage_master_kube_config {
+    file { $openshift::node_master_kube_config_file :
+      ensure  => 'file',
+      content => template('openshift/node.kubeconfig.erb'),
+      replace => false,
+    }
+
+    yaml_setting { 'kube_config_current_context' :
+      target => $openshift::node_config_file,
+      key    => 'current-context',
+      type   => 'string',
+      value  => "default/${openshift::cluster_name}/system:node:${openshift::node_fqdn_internal}",
+    }
+  }
+
   if $openshift::manage_kube_config {
     file { $openshift::node_config_file :
       ensure  => 'file',
       content => template('openshift/node-config.yaml.erb'),
       replace => false,
+    }
+
+    if $openshift::node_manage_master_kube_config {
+      yaml_setting { 'node_master_kube_config_file' :
+        target => $openshift::node_config_file,
+        key    => 'masterKubeConfig',
+        type   => 'string',
+        value  => $openshift::node_master_kube_config_file,
+      }
     }
 
     yaml_setting { "kubeletArguments_eviction_${openshift::node_eviction_type}" :

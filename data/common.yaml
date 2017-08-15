@@ -10,6 +10,7 @@ openshift::children:
   - nodes
 openshift::cluster_domain: '%{::domain}.local'
 openshift::cluster_id: default
+openshift::cluster_name: 'internal-openshift:443'
 openshift::cluster_network: '10.128.0.0/14'
 openshift::console_ext_script:
 openshift::console_ext_style:
@@ -54,10 +55,12 @@ openshift::master_sysconfig_file: /etc/sysconfig/origin-master
 openshift::master_url_internal: 'https://%{::fqdn}.internal'
 openshift::node_config_file: /etc/origin/node/node-config.yaml
 openshift::node_eviction_type: hard
+openshift::node_fqdn_internal: '%{::fqdn}.internal'
 openshift::node_labels:
 openshift::node_log_level: 0
-openshift::node_manage_kube_config: false
+openshift::node_manage_master_kube_config: false
 openshift::node_manage_service: false
+openshift::node_master_kube_config_file: '/etc/origin/node/system:node:%{::fqdn}.internal.kubeconfig'
 openshift::node_name: '%{::fqdn}'
 openshift::node_package_version: '1.5.1'
 openshift::node_pod_max: '%{::processorcount}'

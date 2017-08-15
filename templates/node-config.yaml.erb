@@ -5,7 +5,7 @@ authConfig:
   authenticationCacheTTL: 5m
   authorizationCacheSize: 1000
   authorizationCacheTTL: 5m
-dnsDomain: <%= @cluster_domain %>
+dnsDomain: <%= @openshift::cluster_domain %>
 dnsIP:
 dockerConfig:
   execHandlerName: native
@@ -31,7 +31,7 @@ servingInfo:
   bindAddress: 0.0.0.0:10250
   bindNetwork: tcp4
   certFile: server.crt
-  clientCA: node-client-ca.crt
+  clientCA: ca.crt
   keyFile: server.key
   namedCertificates: null
 volumeDirectory: /root/openshift.local.volumes
