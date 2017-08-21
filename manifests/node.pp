@@ -58,7 +58,7 @@ class openshift::node inherits openshift {
 
     yaml_setting { "kubeletArguments_eviction_${openshift::node_eviction_type}" :
       target => $openshift::node_config_file,
-      key    => "kubeletArguments/${openshift::node_eviction_type}",
+      key    => "kubeletArguments/eviction-${openshift::node_eviction_type}",
       type   => 'array',
       value  => [
         'memory.available<500Mi'
