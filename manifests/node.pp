@@ -117,7 +117,7 @@ class openshift::node inherits openshift {
         key    => 'kubeletArguments/system-serialize-image-pulls',
         type   => 'array',
         value  => [
-          false
+          'false'
         ],
       }
     }
