@@ -5,7 +5,7 @@ authConfig:
   authenticationCacheTTL: 5m
   authorizationCacheSize: 1000
   authorizationCacheTTL: 5m
-dnsDomain: <%= @openshift::cluster_domain %>
+dnsDomain: <%= scope['openshift::cluster_domain'] %>
 dnsIP:
 dockerConfig:
   execHandlerName: native
