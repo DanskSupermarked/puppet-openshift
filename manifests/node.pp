@@ -114,7 +114,7 @@ class openshift::node inherits openshift {
     if versioncmp($openshift::docker_version, '1.9.0') >= 0 { # Starting from Docker 1.9, parallel image pulls are recommanded for speed.
       yaml_setting { 'kubeletArguments_serialize_image_pulls' :
         target => $openshift::node_config_file,
-        key    => 'kubeletArguments/system-serialize-image-pulls',
+        key    => 'kubeletArguments/serialize-image-pulls',
         type   => 'array',
         value  => [
           'false'
