@@ -56,23 +56,23 @@ class openshift::node inherits openshift {
       }
     }
 
-    yaml_setting { "kubeletArguments_eviction_hard" :
+    yaml_setting { 'kubeletArguments_eviction_hard' :
       target => $openshift::node_config_file,
-      key    => "kubeletArguments/eviction-hard",
+      key    => 'kubeletArguments/eviction-hard',
       type   => 'array',
       value  => $openshift::node_eviction_hard,
     }
 
-    yaml_setting { "kubeletArguments_eviction_soft" :
+    yaml_setting { 'kubeletArguments_eviction_soft' :
       target => $openshift::node_config_file,
-      key    => "kubeletArguments/eviction-soft",
+      key    => 'kubeletArguments/eviction-soft',
       type   => 'array',
       value  => $openshift::node_eviction_soft,
     }
 
-    yaml_setting { "kubeletArguments_eviction_soft_grade_period" :
+    yaml_setting { 'kubeletArguments_eviction_soft_grade_period' :
       target => $openshift::node_config_file,
-      key    => "kubeletArguments/eviction-soft-grace-period",
+      key    => 'kubeletArguments/eviction-soft-grace-period',
       type   => 'array',
       value  => $openshift::node_eviction_soft_grace_period,
     }
