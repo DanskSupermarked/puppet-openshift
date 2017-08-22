@@ -56,13 +56,25 @@ class openshift::node inherits openshift {
       }
     }
 
-    yaml_setting { "kubeletArguments_eviction_${openshift::node_eviction_type}" :
+    yaml_setting { "kubeletArguments_eviction_hard" :
       target => $openshift::node_config_file,
-      key    => "kubeletArguments/eviction-${openshift::node_eviction_type}",
+      key    => "kubeletArguments/eviction-hard",
       type   => 'array',
-      value  => [
-        'memory.available<500Mi'
-      ],
+      value  => $openshift::node_eviction_hard,
+    }
+
+    yaml_setting { "kubeletArguments_eviction_soft" :
+      target => $openshift::node_config_file,
+      key    => "kubeletArguments/eviction-soft",
+      type   => 'array',
+      value  => $openshift::node_eviction_soft,
+    }
+
+    yaml_setting { "kubeletArguments_eviction_soft_grade_period" :
+      target => $openshift::node_config_file,
+      key    => "kubeletArguments/eviction-soft-grace-period",
+      type   => 'array',
+      value  => $openshift::node_eviction_soft_grace_period,
     }
 
     # openshift_node_kubelet_args={'pods-per-core': ['10'], 'max-pods': ['250'], 'image-gc-high-threshold': ['90'], 'image-gc-low-threshold': ['80']}
