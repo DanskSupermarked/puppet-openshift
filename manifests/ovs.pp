@@ -14,7 +14,7 @@
 class openshift::ovs inherits openshift {
 
   package { 'openvswitch':
-    ensure  => $ovs_openvswitch_pkg_ensure,
+    ensure  => $openshift::ovs_openvswitch_pkg_ensure,
     require => Yumrepo[$openshift::yum_repo_name],
   }
 
