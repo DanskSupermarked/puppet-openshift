@@ -47,6 +47,7 @@ class openshift(
   Boolean $manage_firewall,
   Boolean $manage_kube_config,
   Boolean $manage_origin_rpm,
+  Boolean $manage_ovs,
   Boolean $manage_repo,
   Integer $master_api_port,
   String $master_config_file,
@@ -75,6 +76,9 @@ class openshift(
   Optional[String] $node_pod_max,
   String $node_service_name,
   String $node_sysconfig_file,
+  String $ovs_openvswitch_pkg_ensure,
+  String $ovs_sdn_pkg,
+  String $ovs_sdn_pkg_ensure,
   String $portal_net,
   Enum['absent', 'present'] $preserve_resolv_conf,
   String $release,
@@ -163,6 +167,10 @@ class openshift(
 
   if $manage_firewall {
     contain openshift::firewall
+  }
+
+  if $manage_ovs {
+    contain openshift::ovs
   }
 
 }

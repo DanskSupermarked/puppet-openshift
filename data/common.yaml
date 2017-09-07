@@ -38,6 +38,7 @@ openshift::logout_url: 'https://console.%{::domain}'
 openshift::manage_firewall: false
 openshift::manage_kube_config: false
 openshift::manage_origin_rpm: false
+openshift::manage_ovs: false
 openshift::manage_repo: false
 openshift::master_api_port: 443
 openshift::master_config_file: /etc/origin/master/master-config.yaml
@@ -69,6 +70,9 @@ openshift::node_package_version: '1.5.1'
 openshift::node_pod_max: '%{::processorcount}'
 openshift::node_service_name: origin-node
 openshift::node_sysconfig_file: /etc/sysconfig/origin-node
+openshift::ovs_openvswitch_pkg_ensure: present
+openshift::ovs_sdn_pkg: origin-sdn-ovs
+openshift::ovs_sdn_pkg_ensure: present
 openshift::portal_net: '172.30.0.0/16'
 openshift::preserve_resolv_conf: present
 openshift::release: '3.5'
