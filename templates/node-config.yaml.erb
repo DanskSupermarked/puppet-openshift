@@ -17,7 +17,7 @@ kind: NodeConfig
 masterKubeConfig: node.kubeconfig
 networkConfig:
   mtu: 1450
-  networkPluginName: ""
+  networkPluginName: <%= scope['redhat/openshift-ovs-subnet'] %>
 nodeIP: <%= @ipaddress %>
 nodeName: <%= @fqdn %>
 podManifestConfig:
