@@ -33,6 +33,7 @@ class openshift::firewall inherits openshift {
         '-i tun0',
         '-j KUBE-FIREWALL',
         '-j KUBE-NODEPORT-NON-LOCAL',
+        '-j OPENSHIFT-FIREWALL-ALLOW',
         'vxlan incoming'
       ],
       purge  => true,
@@ -79,6 +80,10 @@ class openshift::firewall inherits openshift {
     }
 
     firewallchain { 'KUBE-POSTROUTING:nat:IPv4':
+      purge => false,
+    }
+    
+    firewallchain { 'OPENSHIFT-FIREWALL-ALLOW:filter:IPv4':
       purge => false,
     }
 
