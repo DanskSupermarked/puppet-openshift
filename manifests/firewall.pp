@@ -25,7 +25,6 @@ class openshift::firewall inherits openshift {
     proto => 'all',
   }
 
-  # If using Hiera and having nodes not running, Openshift, using Hiera instead.
   if $openshift::firewall_input_chain_ignore {
     firewallchain { 'INPUT:filter:IPv4':
       ignore => [
@@ -82,7 +81,7 @@ class openshift::firewall inherits openshift {
     firewallchain { 'KUBE-POSTROUTING:nat:IPv4':
       purge => false,
     }
-    
+
     firewallchain { 'OPENSHIFT-FIREWALL-ALLOW:filter:IPv4':
       purge => false,
     }
