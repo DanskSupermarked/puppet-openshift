@@ -143,7 +143,7 @@ class openshift::node inherits openshift {
       }
     }
 
-    Yaml_setting <| target == $openshift::config_file |> {
+    Yaml_setting <| target == $openshift::node_config_file |> {
       require => File[$openshift::node_config_file],
     }
   }
@@ -154,7 +154,7 @@ class openshift::node inherits openshift {
       subscribe => File[$openshift::node_sysconfig_file],
     }
 
-    Yaml_setting <| target == $openshift::config_file |> {
+    Yaml_setting <| target == $openshift::node_config_file |> {
       notify => Service[$openshift::node_service_name],
     }
   }
