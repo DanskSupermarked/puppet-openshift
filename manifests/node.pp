@@ -32,7 +32,7 @@ class openshift::node inherits openshift {
       replace => false,
     }
 
-    yaml_setting { 'kube_config_current_context' :
+    yaml_settings { 'kube_config_current_context' :
       target => $openshift::node_config_file,
       key    => 'current-context',
       type   => 'string',
@@ -48,7 +48,7 @@ class openshift::node inherits openshift {
     }
 
     if $openshift::node_manage_master_kube_config {
-      yaml_setting { 'node_master_kube_config_file' :
+      yaml_settings { 'node_master_kube_config_file' :
         target => $openshift::node_config_file,
         key    => 'masterKubeConfig',
         type   => 'string',
@@ -56,21 +56,21 @@ class openshift::node inherits openshift {
       }
     }
 
-    yaml_setting { 'kubeletArguments_eviction_hard' :
+    yaml_settings { 'kubeletArguments_eviction_hard' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/eviction-hard',
       type   => 'array',
       value  => $openshift::node_eviction_hard,
     }
 
-    yaml_setting { 'kubeletArguments_eviction_soft' :
+    yaml_settings { 'kubeletArguments_eviction_soft' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/eviction-soft',
       type   => 'array',
       value  => $openshift::node_eviction_soft,
     }
 
-    yaml_setting { 'kubeletArguments_eviction_soft_grade_period' :
+    yaml_settings { 'kubeletArguments_eviction_soft_grade_period' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/eviction-soft-grace-period',
       type   => 'array',
@@ -78,7 +78,7 @@ class openshift::node inherits openshift {
     }
 
     # openshift_node_kubelet_args={'pods-per-core': ['10'], 'max-pods': ['250'], 'image-gc-high-threshold': ['90'], 'image-gc-low-threshold': ['80']}
-    yaml_setting { 'kubeletArguments_max_pods' :
+    yaml_settings { 'kubeletArguments_max_pods' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/max-pods',
       type   => 'array',
@@ -87,7 +87,7 @@ class openshift::node inherits openshift {
       ],
     }
 
-    yaml_setting { 'kubeletArguments_system_reserved' :
+    yaml_settings { 'kubeletArguments_system_reserved' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/system-reserved',
       type   => 'array',
@@ -96,7 +96,7 @@ class openshift::node inherits openshift {
       ],
     }
 
-    yaml_setting { 'kubeletArguments_dead_container_max' :
+    yaml_settings { 'kubeletArguments_dead_container_max' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/maximum-dead-containers',
       type   => 'array',
@@ -105,7 +105,7 @@ class openshift::node inherits openshift {
       ],
     }
 
-    yaml_setting { 'kubeletArguments_image_gc_low_threshold' :
+    yaml_settings { 'kubeletArguments_image_gc_low_threshold' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/image-gc-low-threshold',
       type   => 'array',
@@ -114,7 +114,7 @@ class openshift::node inherits openshift {
       ],
     }
 
-    yaml_setting { 'kubeletArguments_image_gc_high_threshold' :
+    yaml_settings { 'kubeletArguments_image_gc_high_threshold' :
       target => $openshift::node_config_file,
       key    => 'kubeletArguments/image-gc-high-threshold',
       type   => 'array',
@@ -124,7 +124,7 @@ class openshift::node inherits openshift {
     }
 
     if versioncmp($openshift::docker_version, '1.9.0') >= 0 { # Starting from Docker 1.9, parallel image pulls are recommanded for speed.
-      yaml_setting { 'kubeletArguments_serialize_image_pulls' :
+      yaml_settings { 'kubeletArguments_serialize_image_pulls' :
         target => $openshift::node_config_file,
         key    => 'kubeletArguments/serialize-image-pulls',
         type   => 'array',
@@ -135,7 +135,7 @@ class openshift::node inherits openshift {
     }
 
     if $openshift::node_labels {
-      yaml_setting { 'kubeletArguments_node_labels' :
+      yaml_settings { 'kubeletArguments_node_labels' :
         target => $openshift::node_config_file,
         key    => 'kubeletArguments/node-labels',
         type   => 'array',
@@ -143,7 +143,7 @@ class openshift::node inherits openshift {
       }
     }
 
-    Yaml_setting <| target == $openshift::node_config_file |> {
+    Yaml_settings <| target == $openshift::node_config_file |> {
       require => File[$openshift::node_config_file],
     }
   }
@@ -154,7 +154,7 @@ class openshift::node inherits openshift {
       subscribe => File[$openshift::node_sysconfig_file],
     }
 
-    Yaml_setting <| target == $openshift::node_config_file |> {
+    Yaml_settings <| target == $openshift::node_config_file |> {
       notify => Service[$openshift::node_service_name],
     }
   }
